@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class Grid {
   Cell[][] cells = new Cell[20][20];
+  private boolean[][] treeMap;
   
   public Grid() {
     for(int i=0; i<cells.length; i++) {
@@ -16,6 +17,16 @@ public class Grid {
         cells[i][j] = new Cell(colToLabel(i), j, 10+Cell.size*i, 10+Cell.size*j);
       }
     }
+
+     Cell cell = new Cell(' ', 1, 0, 0);
+cell.hasTree = true; // a tree will be places according to specified col and row
+cells[5][5].hasTree = true;
+cells[10][10].hasTree = true;
+cells[15][15].hasTree = true;
+cells[3][7].hasTree = true;
+cells[12][4].hasTree = true;
+
+
   }
 
   private char colToLabel(int col) {
