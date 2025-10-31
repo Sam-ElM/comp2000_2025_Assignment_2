@@ -29,3 +29,4 @@ public class Dog extends Actor {
     display.add(ear2);
   }
 }
+

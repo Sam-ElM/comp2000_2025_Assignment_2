@@ -16,3 +16,4 @@ public class MoveLeft implements MoveStrategy {
     return "left-most movement";
   }
 }
+

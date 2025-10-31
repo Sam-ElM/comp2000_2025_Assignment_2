@@ -3,3 +3,4 @@ public interface Beat {
   void punchOut(Pulse member);
   void ticktock();
 }
+

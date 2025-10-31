@@ -1,14 +1,11 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import java.time.Duration;
 import java.time.Instant;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
 public class Main extends JFrame {
