@@ -50,3 +50,9 @@ This program converts these values into visual effects on the grid:
 
 A decay effect also takes place after the rain spots, where it decays and is replaced with temp indication color as it evaporates when no new rain data exists.
 
+How to comipile and run the program:
+-Requrements: 
+    .Java 11 or Java 21
+    .Internet connection neede to receive live weather updates
+    
+In VS Code: open the project and click run at the top right corner, it will automatically compile and run the program for you.
