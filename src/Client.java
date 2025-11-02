@@ -1,34 +1,42 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.net.http.*;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
-public class Client {
+public class Client extends Thread {
+    private Stage stage;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://13.238.167.130/times"))
-                .header("Accept", "text/event-stream")
-                .build();
+    public Client(Stage s) { 
+        this.stage = s; 
+    }
 
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
-                .thenApply(HttpResponse::body)
-                .thenAccept(inputStream -> {
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                                System.out.println("Received: " + line);
-                        }
-                    } catch (IOException e) {
-                        System.err.println("Error reading Server Side Event (SSE) stream: " + e.getMessage());
-                    }
-                })
-                .join(); // Wait for the async operation to complete
+    @Override
+    public void run() {
+        try {
+            var request = HttpRequest.newBuilder(URI.create("http://13.238.167.130/weather")).GET().build();
+            var response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofInputStream());
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(response.body(), StandardCharsets.UTF_8))) {
+                Stream<String> lines = br.lines();
+
+                lines.map(line -> line.trim().split(" "))
+                     .filter(parts -> parts.length == 5)
+                     .forEach(parts -> {
+                         try {
+                             String attr = parts[1].toLowerCase(); 
+                             int gx = Integer.parseInt(parts[2]);
+                             int gy = Integer.parseInt(parts[3]);
+                             float val = Float.parseFloat(parts[4]);
+
+                             stage.applyWeatherUpdate(attr, gx, gy, val);
+
+                         } catch (Exception ignored) {}
+                     });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
-

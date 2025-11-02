@@ -20,6 +20,9 @@ public class Main extends JFrame {
         setPreferredSize(new Dimension(1024, 720));
         this.addMouseListener(this);
         stage = StageReader.readStage("data/stage1.rvb");
+        
+        new Client(stage).start();
+
       }
 
       @Override

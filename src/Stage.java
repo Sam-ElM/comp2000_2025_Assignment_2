@@ -14,6 +14,25 @@ public class Stage {
   GameState currentState;
   Beat beat;
 
+
+
+  private boolean toGridIndices(int gx, int gy, int[] out){
+    int cols = grid.cells.length;
+  int rows = grid.cells[0].length;
+  int col = gx + cols / 2;
+  int row = (rows / 2) - gy;
+  if (col < 0 || col >= cols || row < 0 || row >= rows) return false;
+  out[0] = col; out[1] = row;
+  return true;
+  }
+
+  public void applyWeatherUpdate(String attr, int gx, int gy, float value){
+   int[] out = new int[2];
+  if (!toGridIndices(gx, gy, out)) return;
+  grid.cells[out[0]][out[1]].applyWeather(attr, value);
+
+  }
+
   public Stage() {
     grid = new Grid();
     listOfPlayers = new ArrayList<Actor>();
@@ -31,10 +50,8 @@ public class Stage {
   }
 
   public void paint(Graphics g, Point mouseLoc) {
-    // do we have bot moves to make?
     currentState.paint(g, this);
     grid.paint(g, mouseLoc);
-    // Blue cell selection overlay with 50% transparency
     grid.paintOverlay(g, cellOverlay, new Color(0f, 0f, 1f, 0.5f));
 
     beat.ticktock();
@@ -42,17 +59,22 @@ public class Stage {
       player.paint(g);
     }
     draw_sidepanel(g, mouseLoc);
+
+
+  for (int i = 0; i < grid.cells.length; i++) {
+  for (int j = 0; j < grid.cells[i].length; j++) {
+    grid.cells[i][j].decay(0.0025f);
+  }
+}
+
   }
 
   private void draw_sidepanel(Graphics g, Point mouseLoc) {
-    // lots of magic numbers here
-    // they are used to calculate the coordinates of where to draw on the information panel
-    final int hTab = 10;
+   final int hTab = 10;
     final int blockVT = 35;
     final int margin = 21*blockVT;
     int yLoc = 20;
 
-    // state display
     g.setColor(Color.DARK_GRAY);
     g.drawString(currentState.toString(), margin, yLoc);
     yLoc = yLoc + blockVT;
@@ -64,7 +86,6 @@ public class Stage {
       g.drawString(coord, margin, yLoc);
     }
 
-    // agent display
     final int vTab = 15;
     final int labelIndent = margin + hTab;
     final int valueIndent = margin + 3*blockVT;
