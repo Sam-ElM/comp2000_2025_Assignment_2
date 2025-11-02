@@ -3,17 +3,17 @@ import java.util.List;
 
 public class AnimationBeat implements Beat {
   private long started;
-  private long a; // length of phase a
-  private long b; // length of phase b
-  private long c; // length of phase c
+  private long a;
+  private long b;
+  private long c;
 
   private List<Pulse> dancers = new ArrayList<>();
 
   public AnimationBeat() {
     started = System.currentTimeMillis();
-    this.a = 5000;
-    this.b = 500;
-    this.c = 500;
+    this.a =5000;
+    this.b =500;
+    this.c =500;
   }
 
   @Override
@@ -36,9 +36,7 @@ public class AnimationBeat implements Beat {
     }
   }
 
-  // returns which phase the animation is currently in
   private char inPhase(long currTime) {
-    // long currTime = System.currentTimeMillis();
     long rem = (currTime - started) % (a + b + c);
     if (rem > a + b){
       return 'c';
@@ -49,9 +47,7 @@ public class AnimationBeat implements Beat {
     }
   }
 
-  // returns a number (out of 100) showing the percentage completion of this phase
   private int phaseCompletion(long currTime) { 
-    // long currTime = System.currentTimeMillis();
     long rem = (currTime - started) % (a + b + c);
     if (rem > a + b) {
       return (int) (((rem -a - b) * 100) / c);
