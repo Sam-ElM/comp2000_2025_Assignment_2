@@ -16,7 +16,7 @@ Assignment 2:
 -Grid dynamics:
         . Blue areas indicate rainfall or visibl flooding
         . Red or brown areas indicate heat temperature
-        . Black arrown inside each cell indicate wind diresction and strength
+        . Black arrows inside each cell indicate wind diresction and strength
 
 
 -Design patterns:
@@ -41,12 +41,12 @@ Streams and Lambdas:
 
 Interpreing weather values:
 
-The server provides raw data, attributes, drid coordinates, and values between 0 and 1.
+The server provides raw data, attributes, grid coordinates, and values between 0 and 1.
 
 This program converts these values into visual effects on the grid:
 .Rain: blue color indication simulating rising flood levels
 .Temperature: red/brown tint to simulate the heat
 .WindX/WindY: deirection and intensity of the wind
 
-
+A decay effect also takes place after the rain spots, where it decays and is replaced with temp indication color as it evaporates when no new rain data exists.
 
